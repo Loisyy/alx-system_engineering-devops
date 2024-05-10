@@ -3,7 +3,12 @@
 #   - localhost resolves to 127.0.0.2
 #   - facebook.com resolves to 8.8.8.8
 
+# Copy /etc/hosts to a new file
 cp /etc/hosts ~/hosts.new
-echo "127.0.0.2                localhost" > ~/hosts.new
+
+# Add the new mappings to the new /etc/hosts file
+echo "127.0.0.2                localhost" >> ~/hosts.new
 echo "8.8.8.8                facebook.com" >> ~/hosts.new
-cp -f ~/hosts.new /etc/hosts
+
+# Overwrite the original /etc/hosts file with the modified one
+sudo cp -f ~/hosts.new /etc/hosts
