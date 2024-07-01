@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-<<<<<<< HEAD
-# Connects to server with ssh 
-
-ssh ubuntu -i ~/.ssh/school
-=======
-# Creates RSA key pair
+# generating ssh key pairs
 
 ssh-keygen -b 4096 -f school -t rsa -N betty
->>>>>>> eb319268cd4b27260c5ca9fb3af09acf04eb6a91
