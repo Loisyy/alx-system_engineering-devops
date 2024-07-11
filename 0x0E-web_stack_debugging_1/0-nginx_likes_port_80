@@ -1,65 +1,8 @@
 #!/usr/bin/env bash
-# Ensuring Nginx is running and listening on port 80 on all IPv4 addresses
+# nginx likes port 80
 
-# Update package list
 apt-get update -y
-
-# Install Nginx
 apt-get install -y nginx
-
-# Enable Nginx to start on boot
-systemctl enable nginx
-
-# Start Nginx service
-systemctl start nginx
-
-# Ensure Nginx is running
-if systemctl status nginx | grep "active (running)" > /dev/null
-then
-    echo "Nginx is running."
-else
-    echo "Nginx is not running. Attempting to start..."
-    systemctl start nginx
-    if systemctl status nginx | grep "active (running)" > /dev/null
-    then
-        echo "Nginx successfully started."
-    else
-        echo "Failed to start Nginx."
-        exit 1
-    fi
-fi
-
-# Check if Nginx is listening on port 80
-if netstat -tulnp | grep -E "nginx.*:80" > /dev/null
-then
-    echo "Nginx is listening on port 80."
-else
-    echo "Nginx is not listening on port 80. Checking configuration..."
-    if grep -q "listen 80" /etc/nginx/sites-available/default
-    then
-        echo "Configuration seems correct. Restarting Nginx..."
-        systemctl restart nginx
-        if netstat -tulnp | grep -E "nginx.*:80" > /dev/null
-        then
-            echo "Nginx is now listening on port 80."
-        else
-            echo "Failed to get Nginx to listen on port 80."
-            exit 1
-        fi
-    else
-        echo "Configuration issue found. Fixing configuration..."
-        sed -i 's/listen 80 default_server;/listen 80 default_server;/g' /etc/nginx/sites-available/default
-        sed -i 's/listen \[::\]:80 default_server;/listen [::]:80 default_server;/g' /etc/nginx/sites-available/default
-        systemctl restart nginx
-        if netstat -tulnp | grep -E "nginx.*:80" > /dev/null
-        then
-            echo "Nginx is now listening on port 80."
-        else
-            echo "Failed to get Nginx to listen on port 80."
-            exit 1
-        fi
-    fi
-fi
-
-echo "Nginx setup complete and listening on port 80 on all active IPv4 IPs."
+sudo service nginx enable
+sudo service nginx start
 
