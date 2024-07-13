@@ -34,14 +34,14 @@ defaults
   timeout server 15s
   timeout http-request 10s
 
-frontend Loisyy-tech-frontend
+frontend fashiontech.tech-frontend
     bind *:80
-    default_backend Loisyy-tech-backend
+    default_backend fashiontech.tech-backend
 
-backend Loisyy-tech-backend
+backend fashiontech.tech-backend
     balance roundrobin
     server 404560-web-01 18.210.17.103 check
-    server 404560-web-02 100.25.132.19 check
+    server 404560-web-02 100.25.132.197 check
 "
 
 # shellcheck disable=SC2154
