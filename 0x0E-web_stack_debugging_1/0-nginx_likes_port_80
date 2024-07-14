@@ -1,5 +1,35 @@
 #!/usr/bin/env bash
-# debugging nginx port 80
+# This script ensures Nginx is configured to serve a web page on port 80 and restarts the service
 
+# Ensure Nginx is installed
+if ! dpkg -l | grep -q nginx; then
+  echo "Nginx not found. Installing Nginx..."
+  sudo apt update
+  sudo apt install -y nginx
+fi
+
+# Ensure the default site configuration is enabled
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+# Create a default web page
+echo "<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Nginx!</title>
+</head>
+<body>
+    <h1>Success! The Nginx web server is installed and running.</h1>
+</body>
+</html>" | sudo tee /var/www/html/index.html
+
+# Restart Nginx to apply changes
 sudo service nginx restart
+
+# Verify Nginx is running and serving on port 80
+if curl -I localhost 2>/dev/null | grep -q "HTTP/1.1 200 OK"; then
+  echo "Nginx is running and serving HTTP 200 on port 80."
+else
+  echo "Failed to verify Nginx is serving on port 80."
+  exit 1
+fi
+
